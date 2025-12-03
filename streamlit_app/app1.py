@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import os
-import happybase
 from sqlalchemy import create_engine
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
@@ -14,13 +13,17 @@ import matplotlib.pyplot as plt
 # ===========================================
 # RUTA A LA CARPETA DATA
 # ===========================================
-DATA_FOLDER = "/app/data"  # Montada desde docker-compose
+DATA_FOLDER = "/app/data"  # Montada desde docker-compose o local
 
 # ===========================================
 # FUNCIONES
 # ===========================================
 
 def cargar_csvs_desde_data():
+    """
+    Carga los CSV desde la carpeta DATA_FOLDER.
+    Retorna un diccionario de DataFrames.
+    """
     rutas = {
         "clientes": os.path.join(DATA_FOLDER, "clientes.csv"),
         "metodos_pago": os.path.join(DATA_FOLDER, "metodos_pago.csv"),
@@ -41,6 +44,9 @@ def cargar_csvs_desde_data():
 
 
 def entender_datos(df: pd.DataFrame):
+    """
+    Muestra información básica, estadísticos y nulos de un DataFrame.
+    """
     st.write("### Info")
     st.write(df.info())
     st.write("### Descripción")
@@ -50,42 +56,31 @@ def entender_datos(df: pd.DataFrame):
 
 
 def limpiar_datos(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Limpieza básica de un DataFrame:
+    - Quita duplicados
+    - Elimina filas completamente nulas
+    - Llena nulos numéricos con la mediana
+    """
     df = df.drop_duplicates()
     df = df.dropna(how='all')
     df = df.fillna(df.median(numeric_only=True))
     return df
 
-
-def cargar_multiples_tablas_hbase(dict_dfs: dict, host: str):
-    connection = happybase.Connection(host=host, port=9091)  # puerto Thrift
-    connection.open()
-
-    familias = {"cf1": dict()}
-    tablas_existentes = connection.tables()
-
-    for nombre_tabla, df in dict_dfs.items():
-        if nombre_tabla.encode() not in tablas_existentes:
-            connection.create_table(nombre_tabla, familias)
-
-        t = connection.table(nombre_tabla)
-
-        for i, row in df.iterrows():
-            data_dict = {}
-            for col in df.columns:
-                valor = row[col]
-                if pd.notnull(valor):
-                    data_dict[f"cf1:{col}"] = str(valor).encode()
-            t.put(str(i).encode(), data_dict)
-
-        st.success(f"Tabla '{nombre_tabla}' cargada en HBase.")
-
-    connection.close()
+# ===========================================
+# ERROR ORIGINAL: HBase / happybase
+# ===========================================
+# La siguiente sección se comentó porque Streamlit Cloud NO SOPORTA `happybase`
+# ni conexiones a HBase. Cualquier intento de importar o usar happybase falla.
+# import happybase
+# def cargar_multiples_tablas_hbase(dict_dfs: dict, host: str):
+#     ...
 
 # ===========================================
 # STREAMLIT APP
 # ===========================================
 
-st.title("Pipeline CRISP-DM con HBase")
+st.title("Pipeline CRISP-DM con CSV (HBase eliminado)")
 st.markdown("---")
 
 # 1️⃣ Cargar CSV automáticamente
@@ -124,17 +119,13 @@ if "dict_clean" in st.session_state:
             st.subheader(f"{nombre}")
             st.dataframe(df)
 
-# 5️⃣ Subir a HBase
-if "dict_clean" in st.session_state:
-    st.header("4. Subir Datos a HBase")
-    host = "hbase"  # nombre del servicio HBase en docker-compose
-    if st.button("Subir a HBase"):
-        cargar_multiples_tablas_hbase(st.session_state["dict_clean"], host)
-        st.success("Datos subidos a HBase correctamente.")
+# 5️⃣ SECCIÓN DE HBASE ELIMINADA
+# Originalmente se intentaba subir datos a HBase usando happybase.
+# Esto no funciona en Streamlit Cloud, por eso se eliminó.
 
 # 6️⃣ Modelado Predictivo
 if "dict_clean" in st.session_state:
-    st.header("5. Modelado Predictivo")
+    st.header("3. Modelado Predictivo (CRISP-DM)")
 
     df_v = st.session_state["dict_clean"].get("ventas")
     df_p = st.session_state["dict_clean"].get("productos")

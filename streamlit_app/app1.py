@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 # ===========================================
 # RUTA A LA CARPETA DATA
 # ===========================================
-DATA_FOLDER = "/app/data"  # Montada desde docker-compose o local
+DATA_FOLDER = os.path.join(os.getcwd(), "data") # Montada desde docker-compose o local
 
 # ===========================================
 # FUNCIONES

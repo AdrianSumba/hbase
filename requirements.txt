@@ -1,6 +1,6 @@
-streamlit==1.28.0
-pandas==2.1.1
-numpy==1.26.2
-sqlalchemy==2.0.21
-scikit-learn==1.3.0
-matplotlib==3.8.0
+streamlit
+pandas
+numpy
+sqlalchemy
+scikit-learn
+matplotlib

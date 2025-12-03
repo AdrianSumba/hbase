@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: zookeeper:3.8
+    container_name: zookeeper
+    restart: always
+    ports:
+      - "2181:2181"
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=zookeeper:2888:3888
+
+  hbase:
+    image: harisekhon/hbase
+    container_name: hbase
+    restart: always
+    depends_on:
+      - zookeeper
+    ports:
+      - "16000:16000"
+      - "16010:16010"
+      - "16020:16020"
+      - "16030:16030"
+      - "9091:9090"   # puerto Thrift
+      - "9096:9095"
+    environment:
+      ZOOKEEPER_QUORUM: zookeeper
+      HBASE_MANAGES_ZK: "false"
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile  # tu Dockerfile de Streamlit
+    container_name: streamlit
+    restart: always
+    depends_on:
+      - hbase
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data       # 👈 carpeta data
+      - ./stream_lit:/app/stream_lit
+    environment:
+      - STREAMLIT_SERVER_HEADLESS=true

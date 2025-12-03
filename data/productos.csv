@@ -1,0 +1,39 @@
+ID_Producto,Nombre_producto,Categoría,Precio_Unitario,Stock
+1,Leche,Lácteos,"12,24",3327
+2,Yogur,Lácteos,"5,21",3358
+3,Queso cremoso,Lácteos,"17,23",3167
+4,Queso rallado,Lácteos,"19,23",2099
+5,Manteca,Lácteos,"5,65",4929
+6,Asado,Carnicería,"28,56",5137
+7,Chorizo,Carnicería,"11,25",4068
+8,Milanesa,Carnicería,"16,21",3140
+9,Pollo,Carnicería,"18,56",4051
+10,Costilla de cerdo,Carnicería,"14,25",2429
+11,Salchicha,Carnicería,"11,23",1726
+12,Pan francés,Panadería,"8,12",1619
+13,Pan integral,Panadería,"12,56",2228
+14,Facturas,Panadería,"12,36",3125
+15,Medialunas,Panadería,"3,51",4043
+16,Tortas,Panadería,"15,23",3189
+17,Manzanas,Frutas y Verduras,"6,54",3383
+18,Bananas,Frutas y Verduras,"7,25",4720
+19,Tomates,Frutas y Verduras,"6,54",4041
+20,Lechugas,Frutas y Verduras,"4,25",1541
+21,Zanahorias,Frutas y Verduras,"3,25",2800
+22,Cebolla,Frutas y Verduras,"4,21",3545
+23,Papas fritas,Congelados,"8,23",3731
+24,Empanadas,Congelados,"13,54",2908
+25,Pizza congelada,Congelados,"15,45",1640
+26,Hamburgesas congeladas,Congelados,"9,54",1688
+27,Agua mineral,Bebidas,"6,21",4978
+28,Jugos de frutas,Bebidas,"9,45",3637
+29,Cerveza,Bebidas,"11,54",2455
+30,Vino tinto,Bebidas,"13,54",1363
+31,Galletitas de agua,Galletitas y Snacks,"5,24",2771
+32,Galletitas de chocolate,Galletitas y Snacks,"6,25",5057
+33,Papas chips,Galletitas y Snacks,"8,54",2837
+34,Maníes,Galletitas y Snacks,"5,45",4769
+35,Arroz,Conservas,"4,25",1437
+36,Lentejas,Conservas,"3,25",4578
+37,Garbanzos,Conservas,"3,65",1506
+38,Atún enlatado,Conservas,"6,21",2182
